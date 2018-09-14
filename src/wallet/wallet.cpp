@@ -350,7 +350,7 @@ bool CWallet::LoadCryptedZKey(const libzcash::SproutPaymentAddress &addr, const 
 {
     return CCryptoKeyStore::AddCryptedSproutSpendingKey(addr, rk, vchCryptedSecret);
 }
-bool LoadCryptedSaplingZKey(const libzcash::SaplingFullViewingKey &fvk, const std::vector<unsigned char> &vchCryptedSecret)//, const boost::optional<libzcash::SaplingPaymentAddress> &defaultAddr = boost::none)
+bool CWallet::LoadCryptedSaplingZKey(const libzcash::SaplingFullViewingKey &fvk, const std::vector<unsigned char> &vchCryptedSecret)//, const boost::optional<libzcash::SaplingPaymentAddress> &defaultAddr = boost::none)
 {
     
      return CCryptoKeyStore::AddCryptedSaplingSpendingKey(fvk, vchCryptedSecret);//, defaultAddr);
