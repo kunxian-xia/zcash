@@ -124,8 +124,7 @@ bool CWalletDB::WriteCryptedZKey(const libzcash::SproutPaymentAddress & addr,
     }
     return true;
 }
-bool CWalletDB::WriteCryptedSaplingZKey(const boost::optional<libzcash::SaplingPaymentAddress> &defaultAddr,
-                          const libzcash::SaplingFullViewingKey &fvk,
+bool CWalletDB::WriteCryptedSaplingZKey(const libzcash::SaplingFullViewingKey &fvk,
                           const std::vector<unsigned char>& vchCryptedSecret,
                           const CKeyMetadata &keyMeta)
 {
@@ -671,6 +670,27 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             }
             wss.fIsEncrypted = true;
         }
+        else if (strType == "csapzkey")
+        {
+            libzcash::SaplingIncomingViewingKey ivk;
+            ssKey >> ivk;
+            libzcash::SaplingFullViewingKey fvk;
+            ssValue >> fvk;
+
+            //uint256 rkValue;
+            //ssValue >> rkValue;
+            //libzcash::ReceivingKey rk(rkValue);
+            vector<unsigned char> vchCryptedSecret;
+            ssValue >> vchCryptedSecret;
+            wss.nCKeys++;
+
+            if (!pwallet->LoadCryptedSaplingZKey(fvk,vchCryptedSecret))
+            {
+                strErr = "Error reading wallet database: LoadCryptedSaplingZKey failed";
+                return false;
+            }
+            wss.fIsEncrypted = true;
+        }
         else if (strType == "keymeta")
         {
             CPubKey vchPubKey;
@@ -697,6 +717,17 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             pwallet->LoadZKeyMetadata(addr, keyMeta);
 
             // ignore earliest key creation time as taddr will exist before any zaddr
+        }
+        else if (strType == "sapzkeymeta")
+        {
+            libzcash::SaplingIncomingViewingKey ivk;
+            ssKey >> ivk;
+            CKeyMetadata keyMeta;
+            ssValue >> keyMeta;
+
+            wss.nZKeyMeta++;
+
+            pwallet->LoadSaplingZKeyMetadata(ivk, keyMeta);
         }
         else if (strType == "defaultkey")
         {
@@ -806,6 +837,7 @@ static bool IsKeyType(string strType)
     return (strType== "key" || strType == "wkey" ||
             strType == "hdseed" || strType == "chdseed" ||
             strType == "zkey" || strType == "czkey" ||
+            strType == "sapzkey" || strType == "csapzkey" ||
             strType == "vkey" ||
             strType == "mkey" || strType == "ckey");
 }

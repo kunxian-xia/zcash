@@ -191,8 +191,7 @@ public:
                           const libzcash::ReceivingKey & rk,
                           const std::vector<unsigned char>& vchCryptedSecret,
                           const CKeyMetadata &keyMeta);
-    bool WriteCryptedSaplingZKey(const boost::optional<libzcash::SaplingPaymentAddress> &defaultAddr,
-                          const libzcash::SaplingFullViewingKey &fvk,
+    bool WriteCryptedSaplingZKey(const libzcash::SaplingFullViewingKey &fvk,
                           const std::vector<unsigned char>& vchCryptedSecret,
                           const CKeyMetadata &keyMeta);
 

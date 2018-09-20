@@ -310,13 +310,11 @@ bool CWallet::AddCryptedSaplingSpendingKey(const libzcash::SaplingFullViewingKey
         std::cout<<"In AddCryptedSaplingSpendingKey() -----------> [-]"<<endl;
         LOCK(cs_wallet);
         if (pwalletdbEncryption) {
-            return pwalletdbEncryption->WriteCryptedSaplingZKey(defaultAddr,
-                                                         fvk,
+            return pwalletdbEncryption->WriteCryptedSaplingZKey(fvk,
                                                          vchCryptedSecret,
                                                          mapSaplingZKeyMetadata[fvk.in_viewing_key()]);
         } else {
-            return CWalletDB(strWalletFile).WriteCryptedSaplingZKey(defaultAddr,
-                                                         fvk,
+            return CWalletDB(strWalletFile).WriteCryptedSaplingZKey(fvk,
                                                          vchCryptedSecret,
                                                          mapSaplingZKeyMetadata[fvk.in_viewing_key()]);
         }
