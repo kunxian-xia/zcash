@@ -186,7 +186,8 @@ public:
     bool WriteZKey(const libzcash::SproutPaymentAddress& addr, const libzcash::SproutSpendingKey& key, const CKeyMetadata &keyMeta);
     bool WriteSaplingZKey(const libzcash::SaplingIncomingViewingKey &ivk,
                           const libzcash::SaplingExtendedSpendingKey &key,
-                          const CKeyMetadata  &keyMeta);
+                          const CKeyMetadata  &keyMeta,
+                          const boost::optional<libzcash::SaplingPaymentAddress> &defaultAddr);
     bool WriteCryptedZKey(const libzcash::SproutPaymentAddress & addr,
                           const libzcash::ReceivingKey & rk,
                           const std::vector<unsigned char>& vchCryptedSecret,
