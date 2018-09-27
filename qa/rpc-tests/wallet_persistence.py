@@ -23,5 +23,10 @@ class WalletPersistenceTest (BitcoinTestFramework):
         # make sure we still have the address after restarting
         assert_true(sapling_addr in addresses, "Should contain address after restart")
 
+    def setup_network(self, split=False):
+        self.nodes = start_nodes(1, self.options.tmpdir)
+        self.is_network_split = False
+        self.sync_all()
+
 if __name__ == '__main__':
     WalletPersistenceTest().main()
