@@ -542,11 +542,10 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
         }
         else if (strType == "sapzkey")
         {
-            
             //libzcash::SaplingIncomingViewingKey ivk;
-            //ssKey >> ivk;
+            //ssValue >> ivk;
             libzcash::SaplingExtendedSpendingKey key;
-            ssKey >> key;
+            ssValue >> key;
 
             if (!pwallet->LoadSaplingZKey(key))
             {
